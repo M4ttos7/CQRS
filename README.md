@@ -1,1 +1,2 @@
 # CQRS
+passo2
