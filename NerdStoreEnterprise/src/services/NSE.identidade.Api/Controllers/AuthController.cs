@@ -8,8 +8,8 @@ namespace NSE.Identidade.API.Controllers
     [Route("api/identidade")]
     public class AuthController : Controller
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
@@ -17,27 +17,27 @@ namespace NSE.Identidade.API.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost] ("nova-conta")]
+        [HttpPost("nova-conta")]
         public async Task<ActionResult> Registrar(UsuarioRegistro usuarioRegistro)
         {
             if (!ModelState.IsValid) return BadRequest();
 
             var user = new IdentityUser
             {
-                UserName = usuarioResgistro.Email,
-                Email = usuarioRegistgro.Email,
+                UserName = usuarioRegistro.Email,
+                Email = usuarioRegistro.Email,
                 EmailConfirmed = true
             };
 
-            var results = await _userManager.CreateAsync(User, usuarioRegistro.Senha);
+            var results = await _userManager.CreateAsync(user, usuarioRegistro.Senha);
 
-            if (result.Succeeded)
+            if (results.Succeeded)
             {
-                await _SignInmanager. SignInAsync(user, isPeesistent:false)
-                return Ok();  
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok();
             }
 
-            return BadRequest();    
+            return BadRequest();
         }
 
         [HttpPost("autenticar")]
@@ -45,15 +45,15 @@ namespace NSE.Identidade.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _signInManager.PasswordSigInAsync(usuaruioLogin.Email, UsuarioLogin.Senha,
-                false, true);  
-            
-        if (result.Sucessed) 
+            var result = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha,
+                false, true);
+
+            if (result.Succeeded)
             {
                 return Ok();
             }
 
-            return BadRequest();        
+            return BadRequest();
 
 
         }
