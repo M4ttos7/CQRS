@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=DESKTOP-1DEURH4\\SQLEXPRESS;Database=NerdStoreEnterpriseDB;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
 //builder.Services.AddDefaultIdentity<IdentityUser>()
 //    .AddRoles<IdentityRole>()
