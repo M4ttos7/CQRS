@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using NSE.Identidade.API.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +24,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationsScheme;
-});
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(bearerOptions  =>
+{
+    bearerOptions.RequireHttpsMetadata = true;
+    bearerOptions.SaveToken = true;
+bearerOptions.TokenValidationParameters = new TokenValidationParameters
+{
+
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("x")),
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidAudience = "x",
+    ValidIssuer = "x",
+};
+
 
 builder.Services.AddDefaultIdentity<IdentityUser>
     (options => options.SignIn.RequireConfirmedAccount = true)
