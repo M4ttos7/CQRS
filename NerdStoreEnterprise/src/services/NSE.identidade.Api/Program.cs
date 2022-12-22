@@ -21,6 +21,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 //    .AddEntityFrameworkStores < ApplicationDbContext()
 //    .AddDefaultTokenProviders();
 
+
+//JWT
+
+
+var appSettingsSection = Configuration.GetSection("AppSettings");
+services.Configure<AppSettings>(appSettingsSection);
+
+var appSettings = appSettingsSection.Get<AppSettings>();
+var key = Encoding.ASCII.GetBytes(appSettings.Secret);  
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -36,8 +46,8 @@ builder.Services.AddAuthentication(options =>
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("x")),
     ValidateIssuer = true,
     ValidateAudience = true,
-    ValidAudience = "x",
-    ValidIssuer = "x",
+    ValidAudience = appSettings.ValidoEm,
+    ValidIssuer = appSettings.Emissor 
 };
 
 
