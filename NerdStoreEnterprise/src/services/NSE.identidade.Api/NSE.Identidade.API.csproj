@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Configuration\" />
 	  <PackageReference Include="Swashbuckle.AspNetcore" Version="5.3.3" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

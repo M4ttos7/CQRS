@@ -29,7 +29,7 @@ builder.Services.AddAuthentication(options =>
 {
     bearerOptions.RequireHttpsMetadata = true;
     bearerOptions.SaveToken = true;
-bearerOptions.TokenValidationParameters = new TokenValidationParameters
+    bearerOptions.TokenValidationParameters = new TokenValidationParameters
 {
 
     ValidateIssuerSigningKey = true,
