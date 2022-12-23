@@ -18,10 +18,5 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-	  <PackageReference Include="Swashbuckle.AspNetcore" Version="5.3.3" />
-  </ItemGroup>
-
+	
 </Project>
