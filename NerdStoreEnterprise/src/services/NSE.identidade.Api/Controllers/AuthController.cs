@@ -53,7 +53,7 @@ namespace NSE.Identidade.API.Controllers
                 AdicionarErroProcessamento(error.Description);
             }
 
-            return BadRequest();
+            return CustomResponse();
         }
 
         [HttpPost("autenticar")]
