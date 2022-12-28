@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 //builder.Services.AddDefaultIdentity<IdentityUser>()
 //    .AddRoles<IdentityRole>()
+//      .AddErrorDescriber<IdentityMensagensPortugues>()
 //    .AddEntityFrameworkStores < ApplicationDbContext()
 //    .AddDefaultTokenProviders();
 
@@ -29,13 +30,13 @@ var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettingsSection);
 
 var appSettings = appSettingsSection.Get<AppSettings>();
-var key = Encoding.ASCII.GetBytes(appSettings.Secret);  
+var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(bearerOptions  =>
+}).AddJwtBearer(bearerOptions =>
 {
     bearerOptions.RequireHttpsMetadata = true;
     bearerOptions.SaveToken = true;
@@ -55,13 +56,13 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>
     (options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-//builder.Services.AddDefaultIdentity<IdentityUser>()
-//    .AddRoles<IdentityRole>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddErrorDescriber<IdentityMensagensPortugues>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

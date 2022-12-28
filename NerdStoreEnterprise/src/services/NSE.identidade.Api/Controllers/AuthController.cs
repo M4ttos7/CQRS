@@ -8,12 +8,13 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Extensions;
 using NSE.Identidade.API.Models;
+using Microsoft.Extensions.Options;
 
 namespace NSE.Identidade.API.Controllers
 {
     [ApiController]
     [Route("api/identidade")]
-    public class AuthController : Controller
+    public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -47,7 +48,7 @@ namespace NSE.Identidade.API.Controllers
                 return CustomResponse(await GerarJwt(usuarioRegistro.Email));
             }
 
-            foreach (var error in result.Errors)
+            foreach (var error in results.Errors)
             {
                 AdicionarErroProcessamento(error.Description);
             }
@@ -74,7 +75,7 @@ namespace NSE.Identidade.API.Controllers
                 return CustomResponse();
             }
 
-            AdicionarErroProcessamento(Usuário ou senha incorretos);
+            AdicionarErroProcessamento("Usuário ou senha incorretos");
             return CustomResponse();
         }
 
