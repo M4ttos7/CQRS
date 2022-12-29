@@ -91,9 +91,9 @@ namespace NSE.Identidade.API.Controllers
             return ObterRespostaToken(encodedToken, user, claims);
         }
 
-        private async Task<ClaimsIdentity> ObterClaimsUsuario(ICollection<Claim)> claims, IdentityUser user)
-        {      
-           var userRoles = await _userManager.GetRolesAsync(user);
+        private async Task<ClaimsIdentity> ObterClaimsUsuario(ICollection<Claim> claims, IdentityUser user)
+        {
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
@@ -102,13 +102,13 @@ namespace NSE.Identidade.API.Controllers
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
             foreach (var userRole in userRoles)
             {
-               claims.Add(new Claim("role", userRole));
+                claims.Add(new Claim("role", userRole));
             }
 
             var identityClaims = new ClaimsIdentity();
-            identityClaims.AddClaims(claims); 
+            identityClaims.AddClaims(claims);
 
-            return IdentityClaims;
+            return identityClaims;
         }
 
         private string CodificarToken(ClaimsIdentity identityCLaims)
@@ -119,37 +119,38 @@ namespace NSE.Identidade.API.Controllers
             {
                 Issuer = _appSettings.Emissor,
                 Audience = _appSettings.ValidoEm,
-                Subject = identityClaims,
+                Subject = identityCLaims,
                 Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-             });
+            });
 
-             return tokenhandler.WriteToken(token);
+            return tokenHandler.WriteToken(token);
         }
 
-        private UsuarioRespostaLogin(string encodedToken, IdentityUser user, IEnumerable<(Claim> claims)
+        private UsuarioRespostaLogin ObterRespostaToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims)
         {
-    return new UsuarioRespostaLogin
-    {
-        AccessToken = encodedToken,
-        ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
-        UsuarioToken = new UsuarioToken
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Claims = claims.Select(c => new UsuarioClaim { Type = c.Type, Value = c.Value })
+            return new UsuarioRespostaLogin
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                UsuarioToken = new UsuarioToken
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(c => new UsuarioClaim { Type = c.Type, Value = c.Value })
+                }
+            };
         }
-    };
-}
 
-         private static long ToUnixEpochDate(DateTime date)
-             => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+        private static long ToUnixEpochDate(DateTime date)
+            => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
 
-        
 
 
-            
+
+
+
 
 
 

@@ -6,14 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Data;
 using NSE.Identidade.API.Extensions;
 
-namespace NSE.Identidade.API
-{
-    public class Startup
-    {
-        public IConfiguration Configuration { get; }
-        public Startup(IhostEnvironment hostEnviorment)
-        {
-          var builder 
+
 
 var builder = WebApplication.CreateBuilder(args);
 
