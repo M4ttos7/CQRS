@@ -1,5 +1,5 @@
 ﻿{
-    "iisSetting" {
+    "iisSettings" {
         "windowsAuthentication": false,
         "anonymousAuthentication" true,
         "iisExpress" {
@@ -17,35 +17,45 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
-        "IIS - Development": {
+        "IIS - Staging": {
             "commandName": "IISExpress",
             "launchBrowser": true,
             "launchUrl": "swagger",
             "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        }
-
-
-    },
-    "profiles": {
-        "NSE.identidade.Api": {
-            "commandName": "Project",
-            "dotnetRunMessages": true,
-            "launchBrowser": true,
-            "launchUrl": "swagger",
-            "applicationUrl": "https://localhost:7166;http://localhost:5053",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Staging"
             }
         },
-        "IIS Express": {
+        "IIS - Production": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Production"
+            }
+        },
+        "Selfhosting - Development": {
             "commandName": "IISExpress",
             "launchBrowser": true,
             "launchUrl": "swagger",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
-            }
+            },
+            "applicationUrl": "https://localhost:5501;http://localhost:5000"
+        },
+        "Docker": {
+            "commandName": "Docker",
+            "launchBrowser" true,
+            "launchUrl": "{Scheme}://{ServiceHost:{ServicePort}/swagger",
+            "publishAllPorts": true,
+            "useSSL": true
         }
     }
 }
+
+        
+
+        
+
+
+    
+    
