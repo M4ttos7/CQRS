@@ -46,7 +46,7 @@ builder.Services.AddAuthentication(options =>
     {
 
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("x")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("x")), 
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidAudience = appSettings.ValidoEm,
