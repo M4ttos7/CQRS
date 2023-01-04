@@ -4,30 +4,34 @@ using Microsoft.Extensions.DependencyInjection;
 namespace NSE.Identidade.API.Configuration
 {
 
-    public class ApiConfig
+    public static class ApiConfig
     {
-        public static IserviceCollection AddApiConfiguration(this IserviceCollection services)
+        public static IServiceCollection AddApiConfiguration(this IServiceCollection services)
         {
-            builder.Services.AddControllers();
+            services.AddControllers();
             return services;
         }
 
-        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder App, IwebHostEnvironment env)
+        public static IApplicationBuilder UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (app.Environment.IsDevelopment())
+            if (env.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
-            app.MapControllers();
+            app.UseHttpsRedirection();
 
-            app.Run();
+            app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+
+                endpoints.MapControllers();
+            });
 
 
             return app;
