@@ -21,11 +21,9 @@ namespace NSE.Identidade.API.Configuration
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseRouting();
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
+            app.UseIdentityConfiguration();
 
             app.UseEndpoints(endpoints =>
             {

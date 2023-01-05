@@ -5,32 +5,52 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Data;
 using NSE.Identidade.API.Extensions;
-using NSE.identidade.API.Configuration;
+using NSE.Identidade.API.Configuration;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace NSE.Identidade.API
 {
     public class Startup
-    { 
-    public IConfiguration Configuration { get; }
+    {
+        public IConfiguration Configuration { get; }
 
         public Startup(IHostEnvironment hostEnvironment)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(hostEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true)
-                .AddEnvironmentvariables();
+            .SetBasePath(hostEnvironment.ContentRootPath)
+            .AddJsonFile("appsettings.json", true, true)
+            .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true)
+            .AddEnvironmentVariables();
 
-            if (HostEnviroment.IsDevelopment())
+            if (hostEnvironment.IsDevelopment())
             {
                 builder.AddUserSecrets<Startup>();
             }
 
             Configuration = builder.Build();
-        }          
-    
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddIdentityConfiguration(Configuration);
+
+            services.AddApiConfiguration();
+
+            services.AddSwaggerConfiguration();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseSwaggerConfiguration();
+
+            app.UseApiConfiguration(env);
+
+        }
+    }
+}
 
 
 
@@ -38,6 +58,10 @@ namespace NSE.Identidade.API
 
 
 
-    
+
+
+
+
+
 
 

@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Extensions;
 using NSE.Identidade.API.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace NSE.Identidade.API.Configuration
 {
@@ -16,25 +17,24 @@ namespace NSE.Identidade.API.Configuration
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services,
             IConfiguration configuration)
         {
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=DESKTOP-1DEURH4\\SQLEXPRESS;Database=NerdStoreEnterpriseDB;Trusted_Connection=True;MultipleActiveResultSets=true"));
-                options.UseSqlServer(Configuration.GetConncectingString("DefaultConnection")));
-            builder.Services.AddDefaultIdentity<IdentityUser>
-    (options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddDefaultIdentity<IdentityUser>()
+               .AddRoles<IdentityRole>()
+               .AddErrorDescriber<IdentityMensagensPortugues>()
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultTokenProviders();    
 
-    .AddRoles<IdentityRole>()
-    .AddErrorDescriber<IdentityMensagensPortugues>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();    
-
-            var appSettingsSection = builder.Configuration.GetSection("AppSettings");
-            builder.Services.Configure<AppSettings>(appSettingsSection);
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            builder.Services.AddAuthentication(options =>
-
-            {
+            services.AddAuthentication(options =>
+            { 
+           
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(bearerOptions =>
